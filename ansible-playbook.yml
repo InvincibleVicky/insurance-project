@@ -1,2 +1,7 @@
-  - name: Deploy Docker Container
-    command: docker run -itd -p 8082:8082 insurance-img:v1
+---
+- name: Deploy Docker Container
+  hosts: all
+  become: true
+  tasks:
+    - name: Run Docker Container
+      command: docker run -itd -p 8082:8082 insurance-img:v1
