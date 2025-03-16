@@ -41,13 +41,13 @@ pipeline{
 
         stage("Docker Image Creation"){
             step{
-                sh "docker build -t insurance-img ."
+                sh "docker build -t insurance-img:v1 ."
             }
         }
 
         stage("Port Expose"){
             step{
-                sh "docker run -dt -p 8081:8081 --name container1 insurance-img"
+                sh "docker run -dt -p 8081:8081 --name container1 insurance-img:v1"
             }
         }
 
