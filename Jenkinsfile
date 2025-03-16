@@ -44,11 +44,8 @@ pipeline {
             }
         }
 
-        stage("Port Expose") {
-            steps { 
-                echo "Exposing Port 8082"
-                sh "docker run -dt -p 8082:8082 --name container1 insurance-img:v1"
-            }
-        }
+         stage('Configure and Deploy to the test-server'){
+        ansiblePlaybook become: true, credentialsId: 'ansible-key', disableHostKeyChecking: true, installation: 'ansible', inventory: '/etc/ansible/hosts', playbook: 'ansible-playbook.yml'
+    }
     }
 }
