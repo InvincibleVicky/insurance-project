@@ -37,29 +37,12 @@ pipeline {
             }
         }
 
-        stage("Install Docker via Ansible") {
-            steps {
-                echo "Running Ansible Playbook for Docker Installation"
-                ansiblePlaybook credentialsId: "ansible-ssh",
-                                disableHostKeyChecking: true,
-                                installation: 'ansible',
-                                inventory: '/etc/ansible/hosts',
-                                playbook: 'ansible-playbook.yml',
-                                vaultTmpPath: ''
-            }
-        }
-
         stage("Docker Image Creation") {
             steps { 
                 echo "Building Docker Image"
                 sh "docker build -t insurance-img:v1 ."
             }
         }
-
-        stage('port expose'){
-            steps{
-                sh 'docker run -dt -p 8082:8082 --name Container1 insurance-img:v1'
-            }
-        }   
+    
     }
 }
