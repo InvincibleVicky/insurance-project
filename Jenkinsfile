@@ -50,5 +50,11 @@ pipeline{
                 sh "docker run -dt -p 8081:8081 --name container1 insurance-img"
             }
         }
+
+        stage("Ansible Config and Deployment"){
+            step{
+                ansiblePlaybook credentialsId: "ansible-ssh", disableHostKeyChecking: true, installation: 'ansible', inventory: '/etc/ansible/hosts', playbook: 'ansible-playbook.yml', vaultTmpPath: ''
+            }
+        }
     }
 }
