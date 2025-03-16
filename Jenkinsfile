@@ -37,7 +37,7 @@ pipeline {
             }
         }
 
-        stage("Docker Installation") {
+        stage("Install Docker via Ansible") {
             steps {
                 echo "Running Ansible Playbook for Docker Installation"
                 ansiblePlaybook credentialsId: "ansible-ssh",
