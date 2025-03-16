@@ -1,18 +1,30 @@
-- name : Configure Docker on EC2 Instances
-  hosts : all
+---
+- name: Configure Docker and Jenkins Permissions
+  hosts: all
   become: true
-  connection : ssh
-  tasks : 
-  - name: updating apt
-    command : sudo apt-get update
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
 
-  - name : Install Docker
-    command : sudo apt-get install -y docker.io
-    become : yes
-    become_user : root
+    - name: Add Jenkins to Docker Group
+      command: usermod -aG docker jenkins
 
-  - name : Start Docker Service
-    command : sudo systemctl start docker
-    become : yes
-    become_user : root
+    - name: Restart Jenkins Service (First Time)
+      service:
+        name: jenkins
+        state: restarted
 
+    - name: Configure Sudoers for Jenkins
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^jenkins ALL=\(ALL:ALL\) NOPASSWD: ALL$'
+        line: 'jenkins ALL=(ALL:ALL) NOPASSWD: ALL'
+
+    - name: Restart Jenkins Service (Final Time)
+      service:
+        name: jenkins
+        state: restarted
