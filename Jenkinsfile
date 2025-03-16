@@ -38,21 +38,21 @@ pipeline {
         }
 
         stage("Docker Image Creation") {
-            steps { // Changed "step" to "steps"
+            steps { 
                 echo "Building Docker Image"
                 sh "docker build -t insurance-img:v1 ."
             }
         }
 
         stage("Port Expose") {
-            steps { // Changed "step" to "steps"
+            steps { 
                 echo "Exposing Port 8081"
                 sh "docker run -dt -p 8081:8081 --name container1 insurance-img:v1"
             }
         }
 
         stage("Ansible Config and Deployment") {
-            steps { // Changed "step" to "steps"
+            steps { 
                 echo "Running Ansible Playbook for Deployment"
                 ansiblePlaybook credentialsId: "ansible-ssh", disableHostKeyChecking: true, installation: 'ansible', inventory: '/etc/ansible/hosts', playbook: 'ansible-playbook.yml', vaultTmpPath: ''
             }
