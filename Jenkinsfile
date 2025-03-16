@@ -37,16 +37,9 @@ pipeline {
             }
         }
 
-        stage("Docker Image Creation") {
-            steps { 
-                echo "Building Docker Image"
-                sh "docker build -t insurance-img:v1 ."
-            }
-        }
-
-         stage("Configure and Deploy to the test-server") {
+        stage("Docker Installation") {
             steps {
-                echo "Running Ansible Playbook for Deployment"
+                echo "Running Ansible Playbook for Docker Installation"
                 ansiblePlaybook credentialsId: "ansible-ssh",
                                 disableHostKeyChecking: true,
                                 installation: 'ansible',
@@ -54,6 +47,18 @@ pipeline {
                                 playbook: 'ansible-playbook.yml',
                                 vaultTmpPath: ''
             }
+
+        stage("Docker Image Creation") {
+            steps { 
+                echo "Building Docker Image"
+                sh "docker build -t insurance-img:v1 ."
+            }
         }
+
+        stage('port expose'){
+            steps{
+                sh 'docker run -dt -p 8082:8082 --name Container1 insurance-img:v1'
+            }
+        }   
     }
 }
