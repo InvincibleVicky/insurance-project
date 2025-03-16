@@ -46,7 +46,7 @@ pipeline {
 
         stage("Port Expose") {
             steps { 
-                echo "Exposing Port 8081"
+                echo "Exposing Port 8082"
                 sh "docker run -dt -p 8082:8082 --name container1 insurance-img:v1"
             }
         }
