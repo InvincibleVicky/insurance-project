@@ -43,16 +43,10 @@ pipeline {
                 sh "docker build -t insurance-img:v1 ."
             }
         }
-        stage('Deploy to the server') {
-            steps {
-                echo "Deploying to the Server"
-                ansiblePlaybook become: true, 
-                                credentialsId: 'ansible-key', 
-                                disableHostKeyChecking: true, 
-                                installation: 'ansible', 
-                                inventory: '/etc/ansible/hosts', 
-                                playbook: 'ansible-playbook.yml'
+       stage('port expose'){
+            steps{
+                sh 'docker run -dt -p 8082:8082 --name c01 insurance-img:v1'
             }
-        }
+        }   
     }
 }
