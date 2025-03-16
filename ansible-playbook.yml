@@ -16,5 +16,3 @@
     become : yes
     become_user : root
 
-  - name: Deploy Docker Container
-    command: docker run -dt -p 8082:8082 insurance-img:v1
