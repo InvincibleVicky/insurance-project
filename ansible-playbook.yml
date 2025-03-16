@@ -1,2 +1,2 @@
   - name: Deploy Docker Container
-    command: docker run -itd -p 8082:8082 insurance:v1
+    command: docker run -itd -p 8082:8082 insurance-img:v1
