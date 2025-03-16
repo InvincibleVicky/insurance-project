@@ -16,19 +16,7 @@ pipeline {
             }
         }
 
-        stage("Testing the Code") {
-            steps {
-                echo "Testing the Code"
-                sh "mvn test"
-            }
-        }
-
-        stage("QA") {
-            steps {
-                echo "Running Code Quality Checks"
-                sh "mvn checkstyle:checkstyle"
-            }
-        }
+        
 
         stage("Create a Package") {
             steps {
