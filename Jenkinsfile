@@ -18,7 +18,7 @@ pipeline{
                 echo "starting compiling"
                 sh "mvn compile"
             }
-
+        }
         stage("Testing the Code"){
             steps{
                 echo "Testing the Code"
