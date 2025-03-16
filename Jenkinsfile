@@ -47,6 +47,7 @@ pipeline {
                                 playbook: 'ansible-playbook.yml',
                                 vaultTmpPath: ''
             }
+        }
 
         stage("Docker Image Creation") {
             steps { 
