@@ -44,8 +44,16 @@ pipeline {
             }
         }
 
-         stage('Configure and Deploy to the test-server'){
-        ansiblePlaybook become: true, credentialsId: 'ansible-key', disableHostKeyChecking: true, installation: 'ansible', inventory: '/etc/ansible/hosts', playbook: 'ansible-playbook.yml'
-    }
+         stage("Configure and Deploy to the test-server") {
+            steps {
+                echo "Running Ansible Playbook for Deployment"
+                ansiblePlaybook credentialsId: "ansible-ssh",
+                                disableHostKeyChecking: true,
+                                installation: 'ansible',
+                                inventory: '/etc/ansible/hosts',
+                                playbook: 'ansible-playbook.yml',
+                                vaultTmpPath: ''
+            }
+        }
     }
 }
