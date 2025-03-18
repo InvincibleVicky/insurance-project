@@ -21,7 +21,7 @@
     - name: Deploy Docker container
       docker_container:
         name: insurance-app
-        image: insurance-img:v1
+        image: vigneshwar1908/insurance-img:v1
         state: started
         ports:
           - "8084:8081"
