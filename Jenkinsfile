@@ -36,32 +36,42 @@ pipeline {
                 sh "mvn package"
             }
         }
+        
+        stage('Publish the HTML Reports') {
+             steps {
+              publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, 
+                       reportDir: '/var/lib/jenkins/workspace/Insure-Project/target/surefire-reports',
+                       reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', 
+                       useWrapperFileDirectly: true])
+            }
+        }
 
-       stage('Create a Docker image from the Package Insure-Me.jar file') {
-      steps {
-        sh 'docker build -t vigneshwar1908/insure-me:v1 .'
-                    }
+        stage('Create a Docker image from the Package Insure-Me.jar file') {
+            steps {
+                sh 'docker build -t vigneshwar1908/insure-me:v1 .'
             }
-    stage('Login to Dockerhub') {
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerlogin', passwordVariable: 'dockerpass', usernameVariable: 'dockeruser')]) {
-        sh 'docker login -u ${dockeruser} -p ${dockerpass}'
-                                                                    }
-                                }
+        }
+        
+        stage('Login to Dockerhub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerlogin', passwordVariable: 'dockerpass', usernameVariable: 'dockeruser')]) {
+                sh 'docker login -u ${dockeruser} -p ${dockerpass}'                                                       }
             }
-    stage('Push the Docker image') {
-      steps {
-        sh 'docker push vigneshwar1908/insure-me:v1'
-                                }
+        }
+        
+        stage('Push the Docker image') {
+            steps {
+                sh 'docker push vigneshwar1908/insure-me:v1'
             }
+        }
 
         stage('Ansbile config and Deployment') {
-      steps {
-        ansiblePlaybook credentialsId: 'ansible-ssh',
-            disableHostKeyChecking: true,
-            installation: 'ansible',
-            inventory: '/etc/ansible/hosts', 
-            playbook: 'ansible-playbook.yml', vaultTmpPath: ''
+            steps {
+                ansiblePlaybook credentialsId: 'ansible-ssh',
+                    disableHostKeyChecking: true,
+                    installation: 'ansible',
+                    inventory: '/etc/ansible/hosts', 
+                    playbook: 'ansible-playbook.yml', vaultTmpPath: ''
             }
         }
 
