@@ -25,12 +25,23 @@ pipeline {
             }
         }
 
-        stage("Docker Image Creation") {
-            steps { 
-                echo "Building Docker Image"
-                sh "docker build -t insurance-img:v1 ."
+       stage('Create a Docker image from the Package Insure-Me.jar file') {
+      steps {
+        sh 'docker build -t vigneshwar1908/insure-me:v1 .'
+                    }
             }
-        }
+    stage('Login to Dockerhub') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerlogin', passwordVariable: 'dockerpass', usernameVariable: 'dockeruser')]) {
+        sh 'docker login -u ${dockeruser} -p ${dockerpass}'
+                                                                    }
+                                }
+            }
+    stage('Push the Docker image') {
+      steps {
+        sh 'docker push vigneshwar1908/insure-me:v1'
+                                }
+            }
 
         stage('Ansbile config and Deployment') {
       steps {
