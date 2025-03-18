@@ -32,14 +32,9 @@ pipeline {
             }
         }
 
-        stage('Ansbile config and Deployment') {
-           steps {
-                ansiblePlaybook credentialsId: 'ssh', 
-                    disableHostKeyChecking: true, 
-                    installation: 'ansible', 
-                    inventory: '/etc/ansible/hosts',
-                    playbook: 'ansible-playbook.yml',
-                    vaultTmpPath: ''
+        stage("deploy"){
+            steps{
+                sh "docker run -dt -p 8081:8081 --name c01 insurance-img:v1"
             }
         }
 
