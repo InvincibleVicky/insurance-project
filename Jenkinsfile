@@ -39,9 +39,7 @@ pipeline {
                     installation: 'ansible', 
                     inventory: '/etc/ansible/hosts',
                     playbook: 'ansible-playbook.yml',
-                    vaultTmpPath: '',
-                    extraVars: [ansible_become_pass: 'devops']
- 
+                    vaultTmpPath: ''
             }
         }
 
