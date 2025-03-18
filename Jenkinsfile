@@ -16,7 +16,19 @@ pipeline {
             }
         }
 
-        
+        stage("Test the Code") {
+            steps {
+                echo "Starting Testing"
+                sh "mvn test"
+            }
+        }
+
+        stage("QA of the Code") {
+            steps {
+                echo "Starting Compilation"
+                sh "mvn checkstyle:checkstyle"
+            }
+        }
 
         stage("Create a Package") {
             steps {
